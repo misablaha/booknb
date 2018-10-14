@@ -22,7 +22,7 @@ const styles = {
   content: {},
 };
 
-function BookCard(props) {
+const BookCard = (props) => {
   const {
     classes,
     code,
@@ -31,10 +31,11 @@ function BookCard(props) {
     author,
     publisher,
     publishedDate,
+    onClick,
   } = props;
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} onClick={onClick}>
       <CardMedia
         className={classes.cover}
         image={`http://localhost:8080/cover/${code}`}
@@ -63,6 +64,7 @@ BookCard.propTypes = {
   subtitle: PropTypes.string,
   author: PropTypes.string,
   participants: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func,
 };
 
 export default withStyles(styles)(BookCard);

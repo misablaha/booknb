@@ -1,46 +1,26 @@
 import React from 'react';
-import { compose } from 'redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@material-ui/core/Grid/Grid';
+import Slide from '@material-ui/core/Slide/Slide';
 import TextField from '@material-ui/core/TextField';
 
-import { OFFER_ADD, REQUIRE_ADD, SUGGEST_ADD } from '../../actions/add';
-import Slide from '@material-ui/core/Slide/Slide';
-import connect from 'react-redux/es/connect/connect';
-import { searchBook } from '../../actions/search';
-import Grid from '@material-ui/core/Grid/Grid';
 import BookCard from '../BookCard/BookCard';
+import FullScreenDialogHeader from './FullScreenDialogHeader';
+
+import { addBook, OFFER, REQUIRE, SUGGEST } from '../../actions/add';
+import { searchBook } from '../../actions/search';
 import { searchResultSelector } from '../../selectors/search';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const ENTER = 'Enter';
 
-const styles = {
-  appBar: {
-    position: 'relative',
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  flex: {
-    flex: 1,
-  },
-};
-
-function Transition(props) {
-  return <Slide direction="left" {...props} />;
-}
+const Transition = (props) => (
+  <Slide direction="left" {...props} />
+);
 
 class AddDialog extends React.Component {
   state = {
@@ -64,6 +44,11 @@ class AddDialog extends React.Component {
     this.props.searchBook(this.state.search);
   };
 
+  handleSelect = (book) => {
+    this.props.addBook(this.state.type, book);
+    this.handleClose();
+  };
+
   handleClose = () => {
     this.props.onClose();
     this.resetState();
@@ -75,13 +60,8 @@ class AddDialog extends React.Component {
   };
 
   render() {
-    const { books, classes, open } = this.props;
+    const { books, open } = this.props;
     const { type } = this.state;
-    const title = {
-      [OFFER_ADD]: 'Nabízím knihu k přečtení',
-      [REQUIRE_ADD]: 'Sháním knihu k přečtení',
-      [SUGGEST_ADD]: 'Doporučuji knihu k přečtení',
-    };
 
     return (
       <Dialog
@@ -92,36 +72,18 @@ class AddDialog extends React.Component {
         scroll={'paper'}
         fullScreen
       >
-        <AppBar className={classes.appBar} color="default">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              onClick={this.handleClose}
-              aria-label="Close"
-            >
-              <ArrowBackIcon/>
-            </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-              {title[type]}
-            </Typography>
-            <Button color="inherit" onClick={this.handleClose}>
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <FullScreenDialogHeader
+          type={type}
+          showBack
+          onBackClick={this.handleClose}
+        />
         <DialogTitle id="simple-dialog-title" element="div">
           <TextField
             autoFocus
             label="Název knihy a (nebo) jméno autora"
             id="search"
-            // value={this.state.title}
             onChange={this.handleChange('search')}
-            onKeyPress={ev => {
-              if (ev.key === ENTER) {
-                this.handleSearch();
-              }
-            }}
+            onKeyPress={ev => ev.key === ENTER && this.handleSearch()}
             margin="normal"
             autoComplete="off"
             // variant="filled"
@@ -134,7 +96,10 @@ class AddDialog extends React.Component {
               <Grid container spacing={16}>
                 {this.props.books.map(book => (
                   <Grid item key={book.code} xs={12} md={6} lg={4}>
-                    <BookCard {...book}/>
+                    <BookCard
+                      {...book}
+                      onClick={() => this.handleSelect(book)}
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -146,14 +111,6 @@ class AddDialog extends React.Component {
             )
           }
         </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Zavřít
-          </Button>
-          <Button onClick={this.handleConfirm} color="primary">
-            Přidat
-          </Button>
-        </DialogActions>
       </Dialog>
     );
   }
@@ -161,11 +118,12 @@ class AddDialog extends React.Component {
 
 AddDialog.propTypes = {
   open: PropTypes.bool,
-  type: PropTypes.oneOf([OFFER_ADD, REQUIRE_ADD, SUGGEST_ADD]),
+  type: PropTypes.oneOf([OFFER, REQUIRE, SUGGEST]),
   onClose: PropTypes.func,
   onConfirm: PropTypes.func,
-  searchBook: PropTypes.func.isRequired,
   books: PropTypes.arrayOf(PropTypes.shape),
+  searchBook: PropTypes.func.isRequired,
+  addBook: PropTypes.func.isRequired,
 };
 
 AddDialog.defaultProps = {
@@ -179,9 +137,7 @@ const mapStateToProps = (...args) => ({
 
 const mapDispatchToProps = {
   searchBook,
+  addBook,
 };
 
-export default compose(
-  withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
-)(AddDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(AddDialog);

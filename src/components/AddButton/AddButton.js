@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import Menu from '@material-ui/core/Menu/Menu';
 import PropTypes from 'prop-types';
 
-import { OFFER_ADD, REQUIRE_ADD, SUGGEST_ADD } from '../../actions/add';
+import { OFFER, REQUIRE, SUGGEST } from '../../actions/add';
 
 const styles = theme => ({
   root: {
@@ -55,13 +55,13 @@ class AddButton extends Component {
           onClose={this.handleClose()}
           disableRestoreFocus
         >
-          <MenuItem onClick={this.handleClose(OFFER_ADD)}>
+          <MenuItem onClick={this.handleClose(OFFER)}>
             {'Můžu půjčit'}
           </MenuItem>
-          <MenuItem onClick={this.handleClose(REQUIRE_ADD)}>
+          <MenuItem onClick={this.handleClose(REQUIRE)}>
             {'Sháním'}
           </MenuItem>
-          <MenuItem onClick={this.handleClose(SUGGEST_ADD)}>
+          <MenuItem onClick={this.handleClose(SUGGEST)}>
             {'Doporučit k přečtení'}
           </MenuItem>
         </Menu>
