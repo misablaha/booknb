@@ -1,3 +1,10 @@
-export const SUGGEST_ADD = 'SUGGEST_ADD';
-export const OFFER_ADD = 'OFFER_ADD';
-export const REQUIRE_ADD = 'REQUIRE_ADD';
+export const ADD_BOOK = 'ADD_BOOK';
+export const OFFER = 'OFFER';
+export const REQUIRE = 'REQUIRE';
+export const SUGGEST = 'SUGGEST';
+
+export const addBook = (variant, book) => ({
+  type: ADD_BOOK,
+  variant,
+  book,
+});
