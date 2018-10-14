@@ -2,6 +2,8 @@ const express = require('express');
 const qs = require('querystring');
 const axios = require('axios');
 const xpath = require('xpath');
+const deburr = require('lodash/deburr');
+const leven = require('leven');
 const debug = require('debug')('booknb:search');
 const { parseDom } = require('../lib/htmlUtils');
 const { getBooks, href, queryTemplate } = require('../lib/alephUtils');
@@ -21,6 +23,32 @@ router.get('/', function (req, res, next) {
   };
   debug('query', `${href}?${qs.stringify(query)}`);
 
+  const normalizeString = (...args) => (
+    // remove diacritical marks
+    deburr(args.join(' '))
+    // keep only alphanumeric chars
+      .replace(/\W+/g, ' ')
+      .toLowerCase()
+      // sort words
+      .split(' ').sort().join(' ')
+  );
+
+  const search = normalizeString(req.query.q);
+  const fillScore = (book) => {
+    const found = normalizeString(book.title, book.subtitle, book.author);
+    const difference = leven(search, found);
+    const matched = Math.max(search.length, found.length) - difference;
+    let similarity = matched / search.length;
+    // cut by 1% for each character of difference
+    similarity *= 0.99 ** difference;
+    return {
+      ...book,
+      difference,
+      matched,
+      similarity,
+    };
+  };
+
   axios
     .get(href, { params: query })
     .then(result => parseDom(result.data))
@@ -33,7 +61,9 @@ router.get('/', function (req, res, next) {
         const nextHref = next && next.getAttribute('href');
         debug('next', nextHref);
 
-        return getBooks(rows);
+        return getBooks(rows)
+          .map(fillScore)
+          .sort((a, b) => b.similarity - a.similarity);
       }
 
       rows = select('//x:table[@id="record"]//x:tr', dom);
