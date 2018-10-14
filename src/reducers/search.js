@@ -6,7 +6,6 @@ import createMetadataReducer from './metadata';
 const initialState = [];
 
 const userReducer = (state = initialState, action = {}) => {
-  console.log(action);
   switch (action.type) {
     case SEARCH_SUCCESS:
       return get(action, 'response.items', []);
