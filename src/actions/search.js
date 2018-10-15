@@ -25,7 +25,7 @@ export const searchBook = query => dispatch => {
   const config = { params: { q: query } };
   dispatch(searchRequest(config));
 
-  return get('/search', config)
+  return get('/api/search', config)
     .then(result => dispatch(searchSuccess(config, result)))
     .catch(error => dispatch(searchFailure(config, error)));
 };
