@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const qs = require('querystring');
 const axios = require('axios');
 const debug = require('debug')('booknb:cover');
@@ -9,6 +10,8 @@ const router = express.Router();
 // https://cache.obalkyknih.cz/api/cover?multi={"nbn":"cnb000421310"}
 // https://cache.obalkyknih.cz/api/cover?multi={"isbn":"8071970999"}&type=thumbnail&keywords=Dobrá znamení
 // type=icon|thumbnail|medium
+
+router.use(cors());
 
 /* GET users listing. */
 router.get('/:code', function (req, res, next) {
