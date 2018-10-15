@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
 import { SEARCH_FAILURE, SEARCH_REQUEST, SEARCH_SUCCESS } from '../actions/search';
+import { OPEN_ADD } from '../actions/add';
 import createMetadataReducer from './metadata';
 
 const initialState = [];
@@ -11,6 +12,8 @@ const userReducer = (state = initialState, action = {}) => {
       return [];
     case SEARCH_SUCCESS:
       return get(action, 'response.items', []);
+    case OPEN_ADD:
+      return [];
     default:
       return state;
   }

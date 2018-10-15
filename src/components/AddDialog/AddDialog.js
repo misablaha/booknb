@@ -14,7 +14,7 @@ import BookCard from '../BookCard/BookCard';
 import FullScreenDialogHeader from './FullScreenDialogHeader';
 
 import { addBook, OFFER, REQUIRE, SUGGEST } from '../../actions/add';
-import { searchBook } from '../../actions/search';
+import { fetchSearch } from '../../actions/search';
 import { searchResultSelector, searchIsLoading } from '../../selectors/search';
 
 const ENTER = 'Enter';
@@ -142,7 +142,7 @@ const mapStateToProps = (...args) => ({
 });
 
 const mapDispatchToProps = {
-  searchBook,
+  searchBook: fetchSearch,
   addBook,
 };
 
