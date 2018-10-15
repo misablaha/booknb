@@ -21,7 +21,7 @@ const searchFailure = (config, error) => ({
   error,
 });
 
-export const searchBook = query => dispatch => {
+export const fetchSearch = query => dispatch => {
   const config = { params: { q: query } };
   dispatch(searchRequest(config));
 
