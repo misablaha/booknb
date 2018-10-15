@@ -7,6 +7,8 @@ const initialState = [];
 
 const userReducer = (state = initialState, action = {}) => {
   switch (action.type) {
+    case SEARCH_REQUEST:
+      return [];
     case SEARCH_SUCCESS:
       return get(action, 'response.items', []);
     default:
