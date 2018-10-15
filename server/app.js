@@ -20,9 +20,6 @@ app.use(passport.session());
 app.use('/api', apiRouter);
 app.use('/auth', authRouter);
 app.use('/cover', coverRouter);
-app.use('/test', (req, res) => {
-  res.json({ user: req.user });
-});
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));

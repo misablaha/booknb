@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const qs = require('querystring');
 const axios = require('axios');
 const xpath = require('xpath');
@@ -9,14 +8,12 @@ const debug = require('debug')('booknb:search');
 const { parseDom } = require('../../lib/htmlUtils');
 const { getBooks, href, queryTemplate } = require('../../lib/alephUtils');
 
-const router = express.Router();
+const router = express.Router({});
 const select = xpath.useNamespaces({ x: 'http://www.w3.org/1999/xhtml' });
 
 const getBook = (rows) => {
   console.log(rows.length);
 };
-
-router.use(cors());
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
