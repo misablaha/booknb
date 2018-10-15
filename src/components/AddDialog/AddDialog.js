@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid/Grid';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Slide from '@material-ui/core/Slide/Slide';
 import TextField from '@material-ui/core/TextField';
 
@@ -14,7 +15,7 @@ import FullScreenDialogHeader from './FullScreenDialogHeader';
 
 import { addBook, OFFER, REQUIRE, SUGGEST } from '../../actions/add';
 import { searchBook } from '../../actions/search';
-import { searchResultSelector } from '../../selectors/search';
+import { searchResultSelector, searchIsLoading } from '../../selectors/search';
 
 const ENTER = 'Enter';
 
@@ -60,7 +61,7 @@ class AddDialog extends React.Component {
   };
 
   render() {
-    const { books, open } = this.props;
+    const { books, open, isLoading } = this.props;
     const { type } = this.state;
 
     return (
@@ -89,6 +90,9 @@ class AddDialog extends React.Component {
             // variant="filled"
             fullWidth
           />
+          {isLoading && (
+            <LinearProgress />
+          )}
         </DialogTitle>
         <DialogContent>
           {books.length
@@ -122,6 +126,7 @@ AddDialog.propTypes = {
   onClose: PropTypes.func,
   onConfirm: PropTypes.func,
   books: PropTypes.arrayOf(PropTypes.shape),
+  isLoading: PropTypes.bool,
   searchBook: PropTypes.func.isRequired,
   addBook: PropTypes.func.isRequired,
 };
@@ -132,7 +137,8 @@ AddDialog.defaultProps = {
 };
 
 const mapStateToProps = (...args) => ({
-  books: searchResultSelector(...args)
+  books: searchResultSelector(...args),
+  isLoading: searchIsLoading(...args),
 });
 
 const mapDispatchToProps = {
