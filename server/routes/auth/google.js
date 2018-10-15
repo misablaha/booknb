@@ -23,8 +23,7 @@ router.get('/callback',
     failureRedirect: '/login'
   }),
   function (req, res) {
-    req.logIn(req.user, err => {
-      console.log(err);
+    req.logIn(req.user, () => {
       res.redirect('/');
     });
     // Successful authentication, redirect home.
