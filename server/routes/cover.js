@@ -5,7 +5,7 @@ const axios = require('axios');
 const debug = require('debug')('booknb:cover');
 const { href: alephHref } = require('../lib/alephUtils');
 
-const router = express.Router();
+const router = express.Router({});
 
 // https://cache.obalkyknih.cz/api/cover?multi={"nbn":"cnb000421310"}
 // https://cache.obalkyknih.cz/api/cover?multi={"isbn":"8071970999"}&type=thumbnail&keywords=Dobrá znamení
