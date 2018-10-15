@@ -11,7 +11,6 @@ const authRouter = require('./routes/auth');
 const coverRouter = require('./routes/cover');
 
 const app = express();
-const port = process.env.PORT || 8080;
 
 app.use(express.static(path.join(__dirname, '..', 'build')));
 app.use(session({ secret: 'cats' }));
@@ -29,4 +28,4 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+module.exports = app;
