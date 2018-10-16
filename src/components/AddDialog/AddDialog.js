@@ -99,7 +99,7 @@ class AddDialog extends React.Component {
             ? (
               <Grid container spacing={16}>
                 {this.props.books.map(book => (
-                  <Grid item key={book.code} xs={12} md={6} lg={4}>
+                  <Grid item key={book.id} xs={12} md={6} lg={4}>
                     <BookCard
                       {...book}
                       onClick={() => this.handleSelect(book)}

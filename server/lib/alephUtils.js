@@ -1,3 +1,4 @@
+const last = require('lodash/last');
 const toString = require('lodash/toString');
 
 exports.href = 'https://aleph.nkp.cz/F';
@@ -44,6 +45,17 @@ const parseNameAndAuthors = value => {
   };
 };
 
+const isDate = (value) => /^\d{4}/.test(value);
+
+const parseAuthor = value => {
+  const authorParts = value.split(/[,;]\s*/);
+  if (isDate(last(authorParts))) {
+    authorParts.pop();
+  }
+  const [familyName, ...otherNames] = authorParts;
+  return [...otherNames, familyName].join(' ');
+}
+
 exports.getBooks = rows => (
   rows
     .map(row => row.getElementsByTagName('td'))
@@ -54,13 +66,17 @@ exports.getBooks = rows => (
       //   console.log(i, cell.textContent.trim());
       // }
 
+      const author = parseAuthor(textContent(cells[4]));
       const { title, subtitle, authors } = parseNameAndAuthors(textContent(cells[2]));
+      if (author) {
+        authors.shift();
+      }
 
       return {
         code: textContent(cells[8]),
         title: title,
         subtitle: subtitle,
-        author: textContent(cells[4]) ? authors.shift() : '',
+        author,
         participants: authors,
         publisher: textContent(cells[5]),
         publishedDate: textContent(cells[6])
