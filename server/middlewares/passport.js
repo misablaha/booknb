@@ -2,6 +2,7 @@ const passport = require('passport');
 const get = require('lodash/get');
 const pick = require('lodash/pick');
 
+const { createId } = require('../lib/bookUtills');
 const UserModel = require('../models/user');
 
 /**
@@ -9,9 +10,10 @@ const UserModel = require('../models/user');
  * @return {Object}
  */
 const profileToDB = user => {
+  console.log(user);
   const email = get(user.emails.find(email => email.type === 'account'), 'value');
   return {
-    _id: email || `${user.provider}:${user.id}`,
+    _id: createId(email || `${user.provider}:${user.id}`),
     email,
     ...pick(user, ['displayName', 'name', 'emails', 'photos']),
   };
