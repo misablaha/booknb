@@ -6,6 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 
 const styles = {
   root: {
@@ -18,9 +20,13 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+  avatar: {
+    height: 24,
+    width: 24,
+  }
 };
 
-const MenuAppBar = ({ classes }) => (
+const MenuAppBar = ({ classes, user }) => (
   <AppBar position="static">
     <Toolbar>
       <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
@@ -29,6 +35,14 @@ const MenuAppBar = ({ classes }) => (
       <Typography variant="title" color="inherit" className={classes.grow}>
         Booknb
       </Typography>
+      {user && user.displayName && (
+        <IconButton>
+          {user.photos && user.photos.length > 0
+            ? <Avatar alt={user.displayName} src={user.photos[0].value} className={classes.avatar}/>
+            : <AccountCircle/>
+          }
+        </IconButton>
+      )}
     </Toolbar>
   </AppBar>
 );
