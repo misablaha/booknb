@@ -8,7 +8,7 @@ const initialState = null;
 const meReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case ME_SUCCESS:
-      return get(action, 'response', null);
+      return get(action, 'response.data', null);
     default:
       return state;
   }

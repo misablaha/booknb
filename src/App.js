@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -10,33 +12,48 @@ import AddDialog from './components/AddDialog/AddDialog';
 import { addBook, closeAdd, openAdd } from './actions/add';
 import { addActionSelector } from './selectors/addAction';
 import { fetchMe } from './actions/user';
+import { isLogged, meIsLoading, meSelector } from './selectors/user';
 
 class App extends Component {
   componentWillMount() {
     this.props.fetchMe();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.meIsLoading && !nextProps.isLogged) {
+      nextProps.history.push('/auth/google');
+    }
+  }
+
   render() {
     const props = this.props;
 
-    return (
-      <div>
-        <CssBaseline/>
-        <MenuAppBar/>
-        <AddButton onClick={props.onOpenAdd}/>
-        <AddDialog
-          open={!!props.addAction}
-          type={props.addAction}
-          onClose={props.onCloseAdd}
-          onConfirm={book => props.onAddBook(props.addAction, book)}
-        />
-      </div>
-    );
+    if (props.meIsLoading) {
+      return <div/>;
+
+    } else {
+      return (
+        <div>
+          <CssBaseline/>
+          <MenuAppBar user={props.me}/>
+          <AddButton onClick={props.onOpenAdd}/>
+          <AddDialog
+            open={!!props.addAction}
+            type={props.addAction}
+            onClose={props.onCloseAdd}
+            onConfirm={book => props.onAddBook(props.addAction, book)}
+          />
+        </div>
+      );
+    }
   }
 }
 
 const mapStateToProps = (...args) => ({
   addAction: addActionSelector(...args),
+  isLogged: isLogged(...args),
+  meIsLoading: meIsLoading(...args),
+  me: meSelector(...args),
 });
 
 const mapDispatchToProps = {
@@ -46,4 +63,7 @@ const mapDispatchToProps = {
   fetchMe,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(App);

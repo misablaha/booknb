@@ -11,7 +11,7 @@ const userReducer = (state = initialState, action = {}) => {
     case SEARCH_REQUEST:
       return [];
     case SEARCH_SUCCESS:
-      return get(action, 'response.items', []);
+      return get(action, 'response.data', []);
     case OPEN_ADD:
       return [];
     default:

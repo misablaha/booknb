@@ -73,7 +73,7 @@ router.get('/', function (req, res, next) {
 
       return [];
     })
-    .then(result => res.json({ items: result }))
+    .then(result => res.json({ data: result }))
     .catch(next);
 });
 
