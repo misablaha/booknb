@@ -2,11 +2,11 @@ const express = require('express');
 const qs = require('querystring');
 const axios = require('axios');
 const xpath = require('xpath');
-const deburr = require('lodash/deburr');
-const leven = require('leven');
+const _ = require('lodash');
 const debug = require('debug')('booknb:search');
 const { parseDom } = require('../../lib/htmlUtils');
 const { getBooks, href, queryTemplate } = require('../../lib/alephUtils');
+const { createId, mergeBooks, similarityBuilder } = require('../../lib/bookUtills');
 
 const router = express.Router({});
 const select = xpath.useNamespaces({ x: 'http://www.w3.org/1999/xhtml' });
@@ -23,31 +23,15 @@ router.get('/', function (req, res, next) {
   };
   debug('query', `${href}?${qs.stringify(query)}`);
 
-  const normalizeString = (...args) => (
-    // remove diacritical marks
-    deburr(args.join(' '))
-    // keep only alphanumeric chars
-      .replace(/\W+/g, ' ')
-      .toLowerCase()
-      // sort words
-      .split(' ').sort().join(' ')
-  );
+  const similarity = similarityBuilder(req.query.q);
 
-  const search = normalizeString(req.query.q);
-  const fillScore = (book) => {
-    const found = normalizeString(book.title, book.subtitle, book.author);
-    const difference = leven(search, found);
-    const matched = Math.max(search.length, found.length) - difference;
-    let similarity = matched / search.length;
-    // cut by 1% for each character of difference
-    similarity *= 0.99 ** difference;
-    return {
-      ...book,
-      difference,
-      matched,
-      similarity,
-    };
-  };
+  const fillScore = (book) => ({
+    id: createId(book.title, book.subtitle, book.author),
+    ...book,
+    _metadata: {
+      similarity: similarity(book.title, book.subtitle, book.author),
+    },
+  });
 
   axios
     .get(href, { params: query })
@@ -61,9 +45,12 @@ router.get('/', function (req, res, next) {
         const nextHref = next && next.getAttribute('href');
         debug('next', nextHref);
 
-        return getBooks(rows)
+        return _(getBooks(rows))
           .map(fillScore)
-          .sort((a, b) => b.similarity - a.similarity);
+          .orderBy(['_metadata.similarity'], ['desc'])
+          .groupBy('id')
+          .map(mergeBooks)
+          .valueOf();
       }
 
       rows = select('//x:table[@id="record"]//x:tr', dom);

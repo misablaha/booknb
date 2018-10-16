@@ -22,17 +22,33 @@ const styles = {
   content: {},
 };
 
+/*
+{
+  "id": "3cbe1ed9a1e62494d15cd4ba6e6e0126",
+  "title": "Ferda Mravenec",
+  "subtitle": "",
+  "author": "Ondřej Sekora",
+  "publications": [
+    {
+      "code": "ISBN:80-00-00258-2",
+      "publisher": "Praha : Albatros,",
+      "publishedDate": "1992"
+    }
+  ]
+}
+ */
+
 const BookCard = (props) => {
   const {
     classes,
-    code,
     title,
     subtitle,
     author,
-    publisher,
-    publishedDate,
+    publications,
     onClick,
   } = props;
+
+  const { code } = publications[0];
 
   return (
     <Card className={classes.card} onClick={onClick}>
@@ -48,9 +64,6 @@ const BookCard = (props) => {
           {author && (
             <Typography variant="caption" color="textSecondary">{`Autor: ${author}`}</Typography>
           )}
-          {(publisher || publishedDate) && (
-            <Typography variant="caption" color="textSecondary">{`Vydáno: ${publisher} ${publishedDate}`}</Typography>
-          )}
         </CardContent>
       </CardActionArea>
     </Card>
@@ -58,12 +71,16 @@ const BookCard = (props) => {
 }
 
 BookCard.propTypes = {
-  code: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
   title: PropTypes.string,
   subtitle: PropTypes.string,
   author: PropTypes.string,
   participants: PropTypes.arrayOf(PropTypes.string),
+  publications: PropTypes.arrayOf(PropTypes.shape({
+    code: PropTypes.string.isRequired,
+    publisher: PropTypes.string.isRequired,
+    publishedDate: PropTypes.string.isRequired,
+  })),
   onClick: PropTypes.func,
 };
 
