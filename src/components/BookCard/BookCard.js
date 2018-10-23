@@ -54,7 +54,7 @@ const BookCard = (props) => {
     <Card className={classes.card} onClick={onClick}>
       <CardMedia
         className={classes.cover}
-        image={`http://localhost:8080/cover/${code}`}
+        image={`/cover/${code}`}
         title={title}
       />
       <CardActionArea className={classes.inside}>
