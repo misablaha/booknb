@@ -81,6 +81,10 @@ BookCard.propTypes = {
     publisher: PropTypes.string.isRequired,
     publishedDate: PropTypes.string.isRequired,
   })),
+  relations: PropTypes.arrayOf(PropTypes.shape({
+    userId: PropTypes.string.isRequired,
+    variant: PropTypes.string.isRequired,
+  })),
   onClick: PropTypes.func,
 };
 

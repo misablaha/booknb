@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
+import BookList from './components/BookList/BookList';
 import AddButton from './components/AddButton/AddButton';
 import AddDialog from './components/AddDialog/AddDialog';
 
@@ -36,6 +37,7 @@ class App extends Component {
         <div>
           <CssBaseline/>
           <MenuAppBar user={props.me}/>
+          <BookList />
           <AddButton onClick={props.onOpenAdd}/>
           <AddDialog
             open={!!props.addAction}
