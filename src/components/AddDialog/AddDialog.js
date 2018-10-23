@@ -15,7 +15,8 @@ import FullScreenDialogHeader from './FullScreenDialogHeader';
 
 import { addBook, OFFER, REQUIRE, SUGGEST } from '../../actions/add';
 import { fetchSearch } from '../../actions/search';
-import { searchResultSelector, searchIsLoading } from '../../selectors/search';
+import { searchIsLoading, searchResultSelector } from '../../selectors/search';
+import { relationsByBookSelector } from '../../selectors/relations';
 
 const ENTER = 'Enter';
 
@@ -61,7 +62,7 @@ class AddDialog extends React.Component {
   };
 
   render() {
-    const { books, open, isLoading } = this.props;
+    const { books, relations, open, isLoading } = this.props;
     const { type } = this.state;
 
     return (
@@ -98,10 +99,11 @@ class AddDialog extends React.Component {
           {books.length
             ? (
               <Grid container spacing={16}>
-                {this.props.books.map(book => (
+                {books.map(book => (
                   <Grid item key={book.id} xs={12} md={6} lg={4}>
                     <BookCard
                       {...book}
+                      relations={relations[book.id]}
                       onClick={() => this.handleSelect(book)}
                     />
                   </Grid>
@@ -126,6 +128,7 @@ AddDialog.propTypes = {
   onClose: PropTypes.func,
   onConfirm: PropTypes.func,
   books: PropTypes.arrayOf(PropTypes.shape),
+  relations: PropTypes.shape,
   isLoading: PropTypes.bool,
   searchBook: PropTypes.func.isRequired,
   addBook: PropTypes.func.isRequired,
@@ -138,6 +141,7 @@ AddDialog.defaultProps = {
 
 const mapStateToProps = (...args) => ({
   books: searchResultSelector(...args),
+  relations: relationsByBookSelector(...args),
   isLoading: searchIsLoading(...args),
 });
 

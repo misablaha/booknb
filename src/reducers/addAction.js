@@ -1,4 +1,5 @@
-import { OPEN_ADD, CLOSE_ADD, ADD_BOOK } from '../actions/add';
+import { OPEN_ADD, CLOSE_ADD } from '../actions/add';
+import { ADD_BOOK } from '../actions/books';
 
 const initialState = null;
 
