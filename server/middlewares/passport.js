@@ -10,7 +10,6 @@ const UserModel = require('../models/user');
  * @return {Object}
  */
 const profileToDB = user => {
-  console.log(user);
   const email = get(user.emails.find(email => email.type === 'account'), 'value');
   return {
     _id: createId(email || `${user.provider}:${user.id}`),

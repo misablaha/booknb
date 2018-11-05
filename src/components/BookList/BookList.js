@@ -28,10 +28,10 @@ class BookList extends React.Component {
     return (
       <Grid container spacing={16} className={classes.root}>
         {books.map(book => (
-          <Grid item key={book.id} xs={12} md={6} lg={4}>
+          <Grid item key={book._id} xs={12} md={6} lg={4}>
             <BookCard
               {...book}
-              relations={relations[book.id]}
+              relations={relations[book._id]}
               onClick={() => this.handleSelect(book)}
             />
           </Grid>
@@ -42,10 +42,10 @@ class BookList extends React.Component {
 }
 
 BookList.propTypes = {
-  books: PropTypes.arrayOf(PropTypes.shape),
-  relations: PropTypes.shape,
+  books: PropTypes.arrayOf(PropTypes.object),
+  relations: PropTypes.object,
   isLoading: PropTypes.bool,
-  classes: PropTypes.shape.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 BookList.defaultProps = {

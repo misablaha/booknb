@@ -8,20 +8,26 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import BookList from './components/BookList/BookList';
 import AddButton from './components/AddButton/AddButton';
-import AddDialog from './components/AddDialog/AddDialog';
+import AddDialog from './components/AddBook/AddDialog';
 
 import { addBook, closeAdd, openAdd } from './actions/add';
 import { addActionSelector } from './selectors/addAction';
 import { fetchMe } from './actions/user';
+import { fetchBookList } from './actions/book';
+import { fetchRelationList } from './actions/relation';
 import { isLogged, meIsLoading, meSelector } from './selectors/user';
+import { relationsAreLoading } from './selectors/relations';
+import { booksAreLoading } from './selectors/books';
 
 class App extends Component {
   componentWillMount() {
     this.props.fetchMe();
+    this.props.fetchBookList();
+    this.props.fetchRelationList();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.meIsLoading && !nextProps.isLogged) {
+    if (!nextProps.isLoading && !nextProps.isLogged) {
       nextProps.history.push('/auth/google');
     }
   }
@@ -29,7 +35,7 @@ class App extends Component {
   render() {
     const props = this.props;
 
-    if (props.meIsLoading) {
+    if (props.isLoading) {
       return <div/>;
 
     } else {
@@ -51,11 +57,11 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (...args) => ({
-  addAction: addActionSelector(...args),
-  isLogged: isLogged(...args),
-  meIsLoading: meIsLoading(...args),
-  me: meSelector(...args),
+const mapStateToProps = (state) => ({
+  addAction: addActionSelector(state),
+  isLogged: isLogged(state),
+  isLoading: meIsLoading(state) || booksAreLoading(state) || relationsAreLoading(state),
+  me: meSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -63,6 +69,8 @@ const mapDispatchToProps = {
   onCloseAdd: closeAdd,
   onAddBook: addBook,
   fetchMe,
+  fetchBookList,
+  fetchRelationList,
 };
 
 export default compose(

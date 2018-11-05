@@ -21,8 +21,8 @@ const searchFailure = (config, error) => ({
   error,
 });
 
-export const fetchSearch = query => dispatch => {
-  const config = { params: { q: query } };
+export const fetchSearch = search => dispatch => {
+  const config = { params: { q: search.title } };
   dispatch(searchRequest(config));
 
   return get('/api/search', config)
