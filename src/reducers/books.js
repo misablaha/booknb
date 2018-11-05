@@ -1,16 +1,22 @@
 import { combineReducers } from 'redux';
-import { ADD_BOOK } from '../actions/books';
-// import createMetadataReducer from './metadata';
+import get from 'lodash/get';
+import keyBy from 'lodash/keyBy';
+import { ADD_REQUEST } from '../actions/add';
+import { BOOK_FAILURE, BOOK_REQUEST, BOOK_SUCCESS } from '../actions/book';
+import createMetadataReducer from './metadata';
 
 const initialState = {};
 
 const userReducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case ADD_BOOK:
-      const { book } = action;
+    case BOOK_SUCCESS:
+      const bookList = get(action, 'response.data', []);
+      return keyBy(bookList, '_id');
+    case ADD_REQUEST:
+      const { book } = action.payload;
       return {
         ...state,
-        [book.id]: book,
+        [book._id]: book,
       };
     default:
       return state;
@@ -19,5 +25,5 @@ const userReducer = (state = initialState, action = {}) => {
 
 export default combineReducers({
   data: userReducer,
-  // _metadata: createMetadataReducer(SEARCH_REQUEST, SEARCH_SUCCESS, SEARCH_FAILURE),
+  _metadata: createMetadataReducer(BOOK_REQUEST, BOOK_SUCCESS, BOOK_FAILURE),
 });

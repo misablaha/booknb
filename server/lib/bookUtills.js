@@ -38,7 +38,7 @@ exports.createId = (...args) => {
 };
 
 exports.mergeBooks = (books) => ({
-  ...pick(books[0], ['id','title','subtitle','author','_metadata']),
+  ...pick(books[0], ['_id','title','subtitle','author','_metadata']),
   publications: books.map(book => pick(book, ['code','publisher','publishedDate'])),
 });
 

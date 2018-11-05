@@ -4,7 +4,7 @@ const toString = require('lodash/toString');
 exports.href = 'https://aleph.nkp.cz/F';
 exports.queryTemplate = {
   func: 'find-b',
-  // find_code: 'WRD',
+  find_code: 'WRD', // Search in all fields
   local_base: 'SKC',
   // request: 'dokonalý kód', // direct result
   // request: 'bible svatá', // without authors

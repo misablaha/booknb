@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
   const similarity = similarityBuilder(req.query.q);
 
   const fillScore = (book) => ({
-    id: createId(book.title, book.subtitle, book.author),
+    _id: createId(book.title, book.subtitle, book.author),
     ...book,
     _metadata: {
       similarity: similarity(book.title, book.subtitle, book.author),
@@ -48,7 +48,7 @@ router.get('/', function (req, res, next) {
         return _(getBooks(rows))
           .map(fillScore)
           .orderBy(['_metadata.similarity'], ['desc'])
-          .groupBy('id')
+          .groupBy('_id')
           .map(mergeBooks)
           .valueOf();
       }
