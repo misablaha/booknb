@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
+import { userPropTypes } from '../propTypes';
 
 const styles = {
   root: {
@@ -32,7 +33,7 @@ const MenuAppBar = ({ classes, user }) => (
       <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
         <MenuIcon/>
       </IconButton>
-      <Typography variant="title" color="inherit" className={classes.grow}>
+      <Typography variant="h6" color="inherit" className={classes.grow}>
         Booknb
       </Typography>
       {user && user.displayName && (
@@ -49,6 +50,7 @@ const MenuAppBar = ({ classes, user }) => (
 
 MenuAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.shape(userPropTypes),
 };
 
 export default withStyles(styles)(MenuAppBar);

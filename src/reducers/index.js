@@ -6,6 +6,7 @@ import books from './books';
 import me from './me';
 import relations from './relations';
 import search from './search';
+import users from './users';
 
 const rootReducer = combineReducers({
   addAction,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   me,
   relations,
   search,
+  users,
 });
 
 export default rootReducer;

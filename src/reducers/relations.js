@@ -5,13 +5,12 @@ import get from 'lodash/get';
 import { ADD_REQUEST } from '../actions/add';
 import { RELATION_FAILURE, RELATION_REQUEST, RELATION_SUCCESS } from '../actions/relation';
 import createMetadataReducer from './metadata';
-import { BOOK_SUCCESS } from '../actions/book';
 
 const initialState = [];
 
 const relationsReducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case BOOK_SUCCESS:
+    case RELATION_SUCCESS:
       return get(action, 'response.data', []);
       // return keyBy(relationList, '_id');
     case ADD_REQUEST:

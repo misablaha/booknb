@@ -2,13 +2,13 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid/Grid';
 
 import BookCard from '../BookCard/BookCard';
 import { bookListSelector } from '../../selectors/books';
 import { relationsByBookSelector } from '../../selectors/relations';
-
-import { withStyles } from '@material-ui/core/styles';
+import { bookPropTypes } from '../propTypes';
 
 const styles = theme => ({
   root: {
@@ -19,7 +19,7 @@ const styles = theme => ({
 class BookList extends React.Component {
 
   handleSelect = (book) => {
-
+    console.log(book);
   };
 
   render() {
@@ -30,7 +30,7 @@ class BookList extends React.Component {
         {books.map(book => (
           <Grid item key={book._id} xs={12} md={6} lg={4}>
             <BookCard
-              {...book}
+              book={book}
               relations={relations[book._id]}
               onClick={() => this.handleSelect(book)}
             />
@@ -42,7 +42,7 @@ class BookList extends React.Component {
 }
 
 BookList.propTypes = {
-  books: PropTypes.arrayOf(PropTypes.object),
+  books: PropTypes.arrayOf(PropTypes.shape(bookPropTypes)),
   relations: PropTypes.object,
   isLoading: PropTypes.bool,
   classes: PropTypes.object.isRequired,

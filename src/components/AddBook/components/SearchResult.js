@@ -10,7 +10,7 @@ const SearchResult = (props) => {
       {props.books.map(book => (
         <Grid item key={book._id} xs={12} md={6} lg={4}>
           <BookCard
-            {...book}
+            book={book}
             relations={props.relations[book._id]}
             onClick={() => props.onSelect(book)}
           />

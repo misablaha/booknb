@@ -55,7 +55,7 @@ const FullScreenDialog = (props) => {
               <ArrowBackIcon/>
             </IconButton>
           )}
-          <Typography variant="title" color="inherit" className={props.classes.flex}>
+          <Typography variant="h6" color="inherit" className={props.classes.flex}>
             {props.title}
           </Typography>
           {props.showClose && (
@@ -79,14 +79,14 @@ const FullScreenDialog = (props) => {
 
 FullScreenDialog.propTypes = {
   children: PropTypes.node,
-  classes: PropTypes.shape().isRequired,
+  classes: PropTypes.object.isRequired,
   onBackClick: PropTypes.func,
   onClose: PropTypes.func,
   onCloseClick: PropTypes.func,
   open: PropTypes.bool,
   showBack: PropTypes.bool,
   showClose: PropTypes.bool,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 FullScreenDialog.defaultProps = {

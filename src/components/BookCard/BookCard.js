@@ -6,86 +6,76 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import Relations from './Relations';
+
+import { bookPropTypes, relationPropTypes } from '../propTypes';
 
 const styles = {
   card: {
     height: 110,
     display: 'flex',
   },
+  inside: {
+    // flex: '1 0 auto',
+    display: 'flex',
+  },
   cover: {
     width: 70,
     minWidth: 70,
+    height: '100%'
   },
-  inside: {
+  content: {
     flex: '1 0 auto',
   },
-  content: {},
+  relationSet: {
+    flex: '0',
+    display: 'flex',
+    flexDirection: 'column',
+  },
 };
 
-/*
-{
-  "id": "3cbe1ed9a1e62494d15cd4ba6e6e0126",
-  "title": "Ferda Mravenec",
-  "subtitle": "",
-  "author": "Ondřej Sekora",
-  "publications": [
-    {
-      "code": "ISBN:80-00-00258-2",
-      "publisher": "Praha : Albatros,",
-      "publishedDate": "1992"
-    }
-  ]
-}
- */
-
 const BookCard = (props) => {
-  const {
-    classes,
-    title,
-    subtitle,
-    author,
-    publications,
-    onClick,
-  } = props;
+  const { classes, book, onClick, relations } = props;
+  const { title, subtitle, author, publications } = book;
 
   const { code } = publications[0];
 
   return (
-    <Card className={classes.card} onClick={onClick}>
-      <CardMedia
-        className={classes.cover}
-        image={`/cover/${code}`}
-        title={title}
-      />
-      <CardActionArea className={classes.inside}>
+    <Card className={classes.card}>
+      <CardActionArea
+        className={classes.inside}
+        component="div"
+        onClick={onClick}
+      >
+        <CardMedia
+          className={classes.cover}
+          image={`/cover/${code}`}
+          title={title}
+        />
         <CardContent className={classes.content}>
-          <Typography variant="title">{title}</Typography>
-          <Typography variant="subheading" color="textSecondary">{subtitle}</Typography>
+          <Typography variant="h6">{title}</Typography>
+          <Typography variant="subtitle1" color="textSecondary">{subtitle}</Typography>
           {author && (
             <Typography variant="caption" color="textSecondary">{`Autor: ${author}`}</Typography>
           )}
         </CardContent>
       </CardActionArea>
+      <div className={classes.relationSet}>
+        <Relations relations={relations}/>
+      </div>
     </Card>
   );
 }
 
 BookCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
-  author: PropTypes.string,
-  participants: PropTypes.arrayOf(PropTypes.string),
-  publications: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string.isRequired,
-    publisher: PropTypes.string.isRequired,
-    publishedDate: PropTypes.string.isRequired,
-  })),
-  relations: PropTypes.arrayOf(PropTypes.shape({
-    userId: PropTypes.string.isRequired,
-    variant: PropTypes.string.isRequired,
-  })),
+  book: PropTypes.shape(bookPropTypes).isRequired,
+  relations: PropTypes.arrayOf(PropTypes.shape(relationPropTypes)),
   onClick: PropTypes.func,
+};
+
+BookCard.defaultProps = {
+  relations: [],
 };
 
 export default withStyles(styles)(BookCard);
