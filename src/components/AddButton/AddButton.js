@@ -62,7 +62,7 @@ class AddButton extends Component {
             {'Sháním'}
           </MenuItem>
           <MenuItem onClick={this.handleClose(SUGGEST)}>
-            {'Doporučit k přečtení'}
+            {'Doporučuji k přečtení'}
           </MenuItem>
         </Menu>
       </div>
