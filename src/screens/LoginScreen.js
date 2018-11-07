@@ -36,7 +36,7 @@ class LoginScreen extends React.Component {
           <CardContent>
             <Typography gutterBottom variant="h4">BooknB</Typography>
             <Typography gutterBottom variant="h6">
-              Pro Masarykovo gymnázium v Plzni.
+              Pro Mikulášské gymnázium v Plzni.
             </Typography>
             <Typography gutterBottom variant="body1">
               Webísek pro sdílení informací o knížkách v knihovně a jejich půjčování.
