@@ -24,9 +24,9 @@ const iconMap = {
 };
 
 const tooltipTitleMap = {
-  [OFFER]: 'Může zapůjčit',
-  [REQUIRE]: 'Shání',
-  [SUGGEST]: 'Doporučuje k přečtení',
+  [OFFER]: 'Můžu půjčit',
+  [REQUIRE]: 'Sháním',
+  [SUGGEST]: 'Doporučuji k přečtení',
 };
 
 const StyledButton = withStyles((theme) => ({

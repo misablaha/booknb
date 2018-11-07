@@ -25,7 +25,9 @@ const styles = {
     height: '100%'
   },
   content: {
-    flex: '1 0 auto',
+    flex: 1,
+    maxHeight: 110,
+    overflow: 'hidden',
   },
   relationSet: {
     flex: '0',
@@ -53,8 +55,8 @@ const BookCard = (props) => {
           title={title}
         />
         <CardContent className={classes.content}>
-          <Typography variant="h6">{title}</Typography>
-          <Typography variant="subtitle1" color="textSecondary">{subtitle}</Typography>
+          <Typography noWrap variant="h6">{title}</Typography>
+          <Typography noWrap variant="subtitle1" color="textSecondary">{subtitle}</Typography>
           {author && (
             <Typography variant="caption" color="textSecondary">{`Autor: ${author}`}</Typography>
           )}

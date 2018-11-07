@@ -1,77 +1,65 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Progress from '@material-ui/core/LinearProgress';
 
-import MenuAppBar from './components/MenuAppBar/MenuAppBar';
-import BookList from './components/BookList/BookList';
-import AddButton from './components/AddButton/AddButton';
-import AddDialog from './components/AddBook/AddDialog';
+import MainScreen from './screens/MainScreen';
+import LoginScreen from './screens/LoginScreen';
 
-import { addBook, closeAdd, openAdd } from './actions/add';
-import { addActionSelector } from './selectors/addAction';
 import { fetchMe, fetchUserList } from './actions/user';
 import { fetchBookList } from './actions/book';
 import { fetchRelationList } from './actions/relation';
-import { isLogged, meIsLoading, meSelector, usersAreLoading } from './selectors/user';
+import { isLogged, meIsLoading, usersAreLoading } from './selectors/user';
 import { relationsAreLoading } from './selectors/relations';
 import { booksAreLoading } from './selectors/books';
 
 class App extends Component {
   componentWillMount() {
     this.props.fetchMe();
-    this.props.fetchBookList();
-    this.props.fetchRelationList();
-    this.props.fetchUserList();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.isLoading && !nextProps.isLogged) {
-      nextProps.history.push('/auth/google');
+    if (this.props.meIsLoading && !nextProps.meIsLoading) {
+      // user was loaded
+      if (nextProps.isLogged) {
+        // user is logged => fetch data
+        this.props.fetchBookList();
+        this.props.fetchRelationList();
+        this.props.fetchUserList();
+      } else {
+        // user is not logged => forward to login
+        this.props.history.push('/auth');
+      }
+    } else if (this.props.dataAreLoading && !nextProps.dataAreLoading) {
+      // data were loaded => forward to app
+      this.props.history.push('/book');
     }
   }
 
   render() {
-    const props = this.props;
-
-    if (props.isLoading) {
-      return <div/>;
-
-    } else {
-      return (
-        <div>
-          <CssBaseline/>
-          <MenuAppBar user={props.me}/>
-          <BookList />
-          <AddButton onClick={props.onOpenAdd}/>
-          <AddDialog
-            open={!!props.addAction}
-            type={props.addAction}
-            onClose={props.onCloseAdd}
-            onConfirm={book => props.onAddBook(props.addAction, book)}
-          />
-        </div>
-      );
-    }
+    return (
+      <Fragment>
+        <CssBaseline/>
+        <Route exact path="/" component={Progress}/>
+        <Route exact path="/auth" component={LoginScreen}/>
+        <Route exact path="/book" component={MainScreen}/>
+      </Fragment>
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
-  addAction: addActionSelector(state),
   isLogged: isLogged(state),
-  isLoading: meIsLoading(state)
-    || booksAreLoading(state)
+  meIsLoading: meIsLoading(state),
+  dataAreLoading: booksAreLoading(state)
     || relationsAreLoading(state)
     || usersAreLoading(state),
-  me: meSelector(state),
 });
 
 const mapDispatchToProps = {
-  onOpenAdd: openAdd,
-  onCloseAdd: closeAdd,
-  onAddBook: addBook,
   fetchMe,
   fetchBookList,
   fetchRelationList,

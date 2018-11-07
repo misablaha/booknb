@@ -5,7 +5,14 @@ const xpath = require('xpath');
 const _ = require('lodash');
 const debug = require('debug')('booknb:search');
 const { parseDom } = require('../../lib/htmlUtils');
-const { getBooks, href, queryTemplate } = require('../../lib/alephUtils');
+const {
+  getBooks,
+  href,
+  queryTemplate,
+  queryAll,
+  queryAuthor,
+  queryTitle,
+} = require('../../lib/alephUtils');
 const { createId, mergeBooks, similarityBuilder } = require('../../lib/bookUtills');
 
 const router = express.Router({});
@@ -17,9 +24,19 @@ const getBook = (rows) => {
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
+  let querySet = {};
+  const search = JSON.parse(req.query.q);
+  if (search.title && search.author) {
+    querySet = queryAll;
+  } else if (search.title) {
+    querySet = queryTitle;
+  } else if (search.author) {
+    querySet = queryAuthor;
+  }
   const query = {
     ...queryTemplate,
-    request: req.query.q,
+    ...querySet,
+    request: _.values(search).join(' '),
   };
   debug('query', `${href}?${qs.stringify(query)}`);
 

@@ -22,7 +22,7 @@ const searchFailure = (config, error) => ({
 });
 
 export const fetchSearch = search => dispatch => {
-  const config = { params: { q: search.title } };
+  const config = { params: { q: search } };
   dispatch(searchRequest(config));
 
   return get('/api/search', config)

@@ -55,14 +55,14 @@ class AddButton extends Component {
           onClose={this.handleClose()}
           disableRestoreFocus
         >
-          <MenuItem onClick={this.handleClose(OFFER)}>
-            {'Můžu půjčit'}
+          <MenuItem onClick={this.handleClose(SUGGEST)}>
+            {'Doporučuji k přečtení'}
           </MenuItem>
           <MenuItem onClick={this.handleClose(REQUIRE)}>
             {'Sháním'}
           </MenuItem>
-          <MenuItem onClick={this.handleClose(SUGGEST)}>
-            {'Doporučit k přečtení'}
+          <MenuItem onClick={this.handleClose(OFFER)}>
+            {'Můžu půjčit'}
           </MenuItem>
         </Menu>
       </div>

@@ -4,7 +4,6 @@ const toString = require('lodash/toString');
 exports.href = 'https://aleph.nkp.cz/F';
 exports.queryTemplate = {
   func: 'find-b',
-  find_code: 'WRD', // Search in all fields
   local_base: 'SKC',
   // request: 'dokonalý kód', // direct result
   // request: 'bible svatá', // without authors
@@ -16,6 +15,18 @@ exports.queryTemplate = {
   filter_request_1: 'BK', // only books
   filter_code_2: 'WLN',
   filter_request_2: 'cze', // in czech
+};
+
+exports.queryTitle = {
+  find_code: 'WKW', // Search in titles
+};
+
+exports.queryAll = {
+  find_code: 'WRD', // Search in all fields
+};
+
+exports.queryAuthor = {
+  find_code: 'WAU', // Search in authors
 };
 
 const trim = value => toString(value).replace(/[[\]]/g, '').trim();
