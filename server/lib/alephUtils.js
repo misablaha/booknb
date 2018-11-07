@@ -18,7 +18,7 @@ exports.queryTemplate = {
 };
 
 exports.queryTitle = {
-  find_code: 'WKW', // Search in titles
+  find_code: 'WTL', // Search in titles
 };
 
 exports.queryAll = {

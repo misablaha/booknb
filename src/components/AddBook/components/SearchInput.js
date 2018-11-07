@@ -58,7 +58,14 @@ class SearchInput extends React.Component {
             margin="normal"
             fullWidth
           >
-            <Button variant="contained" color="primary" fullWidth>Vyhledat</Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => onSearch(value)}
+              fullWidth
+            >
+              Vyhledat
+            </Button>
           </FormControl>
         </Grid>
       </Grid>
