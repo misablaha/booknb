@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
 import { userPropTypes } from '../propTypes';
+import TogleFilter from './TogleFilter';
 
 const styles = {
   root: {
@@ -36,6 +37,7 @@ const MenuAppBar = ({ classes, user }) => (
       <Typography variant="h6" color="inherit" className={classes.grow}>
         BooknB
       </Typography>
+      <TogleFilter/>
       {user && user.displayName && (
         <IconButton>
           {user.photos && user.photos.length > 0

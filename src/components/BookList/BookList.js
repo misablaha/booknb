@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid/Grid';
 
 import BookCard from '../BookCard/BookCard';
-import { bookListSelector } from '../../selectors/books';
+import { filteredBookListSelector } from '../../selectors/books';
 import { relationsByBookSelector } from '../../selectors/relations';
 import { bookPropTypes } from '../propTypes';
 
@@ -55,9 +55,8 @@ BookList.defaultProps = {
 };
 
 const mapStateToProps = (...args) => ({
-  books: bookListSelector(...args),
+  books: filteredBookListSelector(...args),
   relations: relationsByBookSelector(...args),
-  // isLoading: booksAreLoading(...args),
 });
 
 export default compose(

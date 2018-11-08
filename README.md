@@ -4,7 +4,9 @@
 - parsovat výsledek z jednou knihou
 - detail knížky
 - zobrazení na úzkém display
-- filtrování ( OFFER | REQUIRE | SUGGEST | ONLY_MINE )
+- filtrování ( ONLY_MINE )
+- vytvorit / smazat vazbu klikem na ikonku u knihy
+- ikonky s moji vazbou jinou barvou
 - padding na spodní straně listu
 - záznamy o půjčení
 - nezobrazovat knihy bez vazeb
