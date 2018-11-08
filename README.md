@@ -1,5 +1,4 @@
 # TODO
-- seřadit knížky podle názvu
 - stáhnout 2 stránky z vyhledávání
 - cache pro obrázky
 - parsovat výsledek z jednou knihou
