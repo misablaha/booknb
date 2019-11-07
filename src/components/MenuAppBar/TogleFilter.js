@@ -27,7 +27,7 @@ class LongMenu extends React.Component {
           onClick={this.handleClick}
           color="inherit"
         >
-          <FilterIcon color="#FFF"/>
+          <FilterIcon color="inherit"/>
         </IconButton>
         <Menu
           anchorEl={anchorEl}
